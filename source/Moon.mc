@@ -48,7 +48,7 @@ class Moon {
 	    //!Sys.println(" r = " + r);
 	    return r;					//11 (ganze Zahl)
     }
-    function updateable_calcmoonphase(dc, dateinfo, hour) {
+    function updateable_calcmoonphase(targetDc, dateinfo, hour) {
 //    	if (t_phase != dateinfo.day) {
 //    		t_phase = dateinfo.day;
 
@@ -61,24 +61,24 @@ class Moon {
 
 //    	}
     	
-    	drawmoon(dc, moonx, moony); // uses c_moon_y
+    	drawmoon(targetDc, moonx, moony); // uses c_moon_y
     	
    		return c_phase;
     }
 
-	function drawmoon(dc, moonx, moony) {
-        dc.drawBitmap(moonx, moony, moon_bitmap);
+	function drawmoon(targetDc, moonx, moony) {
+        targetDc.drawBitmap(moonx, moony, moon_bitmap);
 		var x, xby2;
-		dc.setColor(App.getApp().getProperty("BackgroundColor"), Gfx.COLOR_TRANSPARENT);
-        //dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_WHITE);
-        dc.setPenWidth(1);
+		targetDc.setColor(App.getApp().getProperty("BackgroundColor"), Gfx.COLOR_TRANSPARENT);
+        //dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_BLUE);
+        targetDc.setPenWidth(1);
 		for (x=1; x<moon_width; x++) {
 			xby2 = x*2;
 			if (c_moon_y[xby2] >= 0) {
-				dc.drawLine(moonx+x, moony+c_moon_y[xby2], moonx+x, moony+c_moon_y[xby2+1]);
+				targetDc.drawLine(moonx+x, moony+c_moon_y[xby2], moonx+x, moony+c_moon_y[xby2+1]);
 			} else {
-				dc.drawLine(moonx+x, moony+1, moonx+x, moony-c_moon_y[xby2]);
-				dc.drawLine(moonx+x, moony-c_moon_y[xby2+1], moonx+x, moony+moon_width);
+				targetDc.drawLine(moonx+x, moony+1, moonx+x, moony-c_moon_y[xby2]);
+				targetDc.drawLine(moonx+x, moony-c_moon_y[xby2+1], moonx+x, moony+moon_width);
 			}
 		}
 		//Sys.println(" Ende-------" + c_moon_y);

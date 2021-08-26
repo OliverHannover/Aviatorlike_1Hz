@@ -33,8 +33,8 @@ module marker{
 			App.getApp().setProperty(LON, lon);
 		}
 
-//		lat = 52.375892 * Math.PI / 180.0;
-//		lon = 9.732010 * Math.PI / 180.0;
+		lat = 52.375892 * Math.PI / 180.0;
+		lon = 9.732010 * Math.PI / 180.0;
 
 		if(lat != null && lon != null)
 		{
@@ -55,7 +55,7 @@ module marker{
         	var center_y = dc.getHeight() / 2;
      
 			r1 = dc.getWidth()/2 - outerRad; //outside
-			r2 = r1 -lenth; ////Länge des Zeigers
+			r2 = r1 -lenth; ////Lï¿½nge des Zeigers
      
 			dc.setColor(App.getApp().getProperty("QuarterNumbersColor"), Gfx.COLOR_TRANSPARENT);
 			dc.setPenWidth(2);		

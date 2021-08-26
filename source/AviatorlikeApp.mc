@@ -15,10 +15,24 @@ class AviatorlikeApp extends App.AppBase {
     function onStop(state) {
     }
 
-    // Return the initial view of your application here
-    function getInitialView() {
-        return [ new AviatorlikeView() ];
+
+    
+    
+        //! Return the initial view for the app
+    //! @return Array Pair [View, Delegate] or Array [View]
+    public function getInitialView() as Array<Views or InputDelegates>? {
+        if (WatchUi has :WatchFaceDelegate) {
+            var view = new $.AviatorlikeView();
+            var delegate = new $.AviatorlikeDelegate(view);
+            return [view, delegate] as Array<Views or InputDelegates>;
+        } else {
+            return [new $.AviatorlikeView()] as Array<Views>;
+        }
     }
+    
+    
+    
+    
     
 
     // New app settings have been received so trigger a UI update
