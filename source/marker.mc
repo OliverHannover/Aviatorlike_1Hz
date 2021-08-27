@@ -33,8 +33,8 @@ module marker{
 			App.getApp().setProperty(LON, lon);
 		}
 
-		lat = 52.375892 * Math.PI / 180.0;
-		lon = 9.732010 * Math.PI / 180.0;
+//		lat = 52.375892 * Math.PI / 180.0;
+//		lon = 9.732010 * Math.PI / 180.0;
 
 		if(lat != null && lon != null)
 		{

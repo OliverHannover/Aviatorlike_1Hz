@@ -85,9 +85,9 @@ class AviatorlikeView extends Ui.WatchFace{
                 :width=>dc.getWidth()*1.0,
                 :height=>dc.getHeight()*1.0,
                 :palette=> [
-                	Graphics.COLOR_TRANSPARENT,
-                	//Graphics.COLOR_DK_RED,
-                	//Graphics.COLOR_RED,
+                	//Graphics.COLOR_TRANSPARENT,
+                	Graphics.COLOR_DK_RED,
+                	Graphics.COLOR_RED,
                     Graphics.COLOR_DK_GRAY,
                     Graphics.COLOR_LT_GRAY,
                     Graphics.COLOR_BLACK,
@@ -536,8 +536,8 @@ function drawBattery(dc) {
 
 
 // lokale Position (nur für Simulator!)
-		lat = 52.375892 * Math.PI / 180.0;
-		lon = 9.732010 * Math.PI / 180.0;
+//		lat = 52.375892 * Math.PI / 180.0;
+//		lon = 9.732010 * Math.PI / 180.0;
 
 		if(lat != null && lon != null)
 		{
@@ -575,7 +575,7 @@ function drawBattery(dc) {
 	  	var graphposX = stepGraphposX;
 	  	var graphposY = stepGraphposY + 4;
 	  	
-	  	dc.setColor((App.getApp().getProperty("ForegroundColor")), Gfx.COLOR_TRANSPARENT);
+	  	dc.setColor((App.getApp().getProperty("ForegroundColor")), (App.getApp().getProperty("BackgroundColor")));
 	  	dc.setPenWidth(1);
 	  	//first draw empty graph---------------------------------------------------------
 	  	for(var i=0;i<7;i++) {	 
@@ -599,7 +599,7 @@ function drawBattery(dc) {
 		  		
 		  		//Sys.println("graphheight " + i + ": " + graphheight);	
 		  		dc.fillRectangle(graphposX, graphposY+maxheight-graphheight, 8, graphheight);		  	
-		  		dc.setColor((App.getApp().getProperty("ForegroundColor")), Gfx.COLOR_TRANSPARENT);
+		  		dc.setColor((App.getApp().getProperty("ForegroundColor")), (App.getApp().getProperty("DigitalBackgroundColor")));
 		  		dc.drawRectangle(graphposX, graphposY, 9, maxheight);
 	
 		        graphposX = graphposX - 11;
@@ -616,9 +616,9 @@ function drawBattery(dc) {
 	  		if (graphheight > maxheight) {
 	  			graphheight = maxheight;
 	  		}
-	  		dc.setColor((App.getApp().getProperty("HandsColor1")), Gfx.COLOR_TRANSPARENT);
+	  		dc.setColor((App.getApp().getProperty("HandsColor1")), (App.getApp().getProperty("DigitalBackgroundColor")));
 	  		dc.fillRectangle(stepGraphposX+11, graphposY+maxheight-graphheight, 9, graphheight);	 
-	  		dc.setColor((App.getApp().getProperty("ForegroundColor")), Gfx.COLOR_TRANSPARENT); 	
+	  		dc.setColor((App.getApp().getProperty("ForegroundColor")), (App.getApp().getProperty("DigitalBackgroundColor"))); 	
 		  	dc.drawRectangle(stepGraphposX+11, graphposY, 9, maxheight);
 	  	}
 	  }// end od draw stepHistory-Graph----------------------
@@ -773,11 +773,20 @@ function onUpdate(dc) {
         
     // Moon phase
 		var MoonEnable = (App.getApp().getProperty("MoonEnable"));
+		var bgcolor = App.getApp().getProperty("BackgroundColor");
+		Sys.println(bgcolor);
+		var moontype;
+		if (bgcolor == 0) {
+			moontype = Ui.loadResource(Rez.Drawables.moon2);
+		} else {
+			moontype = Ui.loadResource(Rez.Drawables.moon1);
+		}
+					
 		if (MoonEnable) {             			
 	   		var now = Time.now();
 			var dateinfo = Calendar.info(now, Time.FORMAT_SHORT);
 	        var clockTime = Sys.getClockTime();
-	        var moon = new Moon(Ui.loadResource(Rez.Drawables.moon1), moonwidth, moonx, moony);
+	        var moon = new Moon(moontype, moonwidth, moonx, moony);
 	        	
 	        moon.updateable_calcmoonphase(targetDc, dateinfo, clockTime.hour);
 	        
@@ -788,8 +797,8 @@ function onUpdate(dc) {
 	 		//targetDc.setColor((App.getApp().getProperty("NumbersColor")), Gfx.COLOR_TRANSPARENT);
 	 		//targetDc.drawText(moonx+moonwidth/2,moony+moonwidth/2-12, fontLabel, moon.c_moon_label, Gfx.TEXT_JUSTIFY_CENTER);
 			//targetDc.drawText(moonx+moonwidth/2,moony+moonwidth/2, fontLabel, moon.c_phase, Gfx.TEXT_JUSTIFY_CENTER);
-		}
-              
+		}       
+        
    // Draw the numbers --------------------------------------------------------------------------------------
        var NbrFont = (App.getApp().getProperty("Numbers")); 
        targetDc.setColor((App.getApp().getProperty("NumbersColor")), (App.getApp().getProperty("BackgroundColor")));
@@ -835,16 +844,8 @@ function onUpdate(dc) {
 	        		targetDc.drawText(width / 2, height - 50, font1, "6", Gfx.TEXT_JUSTIFY_CENTER);
 	        		targetDc.drawText(16, (height / 2) - 22, font1, "9", Gfx.TEXT_JUSTIFY_LEFT);
 		   		}
-		   	if ( NbrFont == 6) {  //simple
-		    		targetDc.drawText((width / 2), 10, Gfx.FONT_SYSTEM_LARGE   , "12", Gfx.TEXT_JUSTIFY_CENTER);
-		    		if (! MoonEnable) {
-		    			targetDc.drawText(width - 16, (height / 2) - 22, Gfx.FONT_SYSTEM_LARGE  , "3", Gfx.TEXT_JUSTIFY_RIGHT);
-	        		}
-	        		targetDc.drawText(width / 2, height - 45, Gfx.FONT_SYSTEM_LARGE   , "6", Gfx.TEXT_JUSTIFY_CENTER);
-	        		targetDc.drawText(16, (height / 2) - 22, Gfx.FONT_SYSTEM_LARGE   , "9", Gfx.TEXT_JUSTIFY_LEFT);
-		   		}
-       
-        
+
+
       
     // Indicators ---------------------------------------------------------------------------       
  	
@@ -854,7 +855,6 @@ function onUpdate(dc) {
 		var AlmMsg = (App.getApp().getProperty("AlmMsg"));
 		
 		if (AlmMsgEnable) {
-			var offcenter=35;
 			var labelLeft = "";
 			var labelRight = "";
 			//var infoLeft = "";
@@ -862,7 +862,7 @@ function onUpdate(dc) {
 			infoLeft = "";
 			infoRight = "";
 			
-			targetDc.setColor((App.getApp().getProperty("QuarterNumbersColor")), (App.getApp().getProperty("BackgroundColor")));
+			targetDc.setColor((App.getApp().getProperty("NumbersColor")), (App.getApp().getProperty("BackgroundColor")));
 			var messages = Sys.getDeviceSettings().notificationCount;
 			var alarm = Sys.getDeviceSettings().alarmCount; 
 			
@@ -879,17 +879,17 @@ function onUpdate(dc) {
 	     		labelRight = "Msg";	
 				//messages
  	     		if (messages > 0) {
- 	     		    targetDc.fillCircle(width / 2 + offcenter, height / 2 -7, 5);
+ 	     		    targetDc.fillCircle(width / 6 * 4, height / 2 -7, 5);
  	     		}
  	     		targetDc.setPenWidth(2);
- 	        	targetDc.drawCircle(width / 2 + offcenter, height / 2 -7, 5);	
+ 	        	targetDc.drawCircle(width / 6 * 4, height / 2 -7, 5);	
  	        		     		     	
 				//Alarm		     	
  	     		if (alarm > 0) {
- 	     			targetDc.fillCircle(width / 2 - offcenter, height / 2 -7, 5);
+ 	     			targetDc.fillCircle(width / 6 * 2, height / 2 -7, 5);
  	     		}
  	     		targetDc.setPenWidth(2);
- 	        	targetDc.drawCircle(width / 2 - offcenter, height / 2 -7, 5);
+ 	        	targetDc.drawCircle(width / 6 * 2, height / 2 -7, 5);
 	     	} 
 	     	
 	     	if (AlmMsg == 3) { 
@@ -921,11 +921,11 @@ function onUpdate(dc) {
 				infoRight = ActMonitor.getInfo().steps;    	
 	     	}
 	     		
-			targetDc.drawText(width / 2 + offcenter, height / 2 -15, fontLabel, infoRight, Gfx.TEXT_JUSTIFY_CENTER);	     		
-	 		targetDc.drawText(width / 2 + offcenter, height / 2 -2, fontLabel, labelRight, Gfx.TEXT_JUSTIFY_CENTER);
+			targetDc.drawText(width / 6 * 4, height / 2 -15, fontLabel, infoRight, Gfx.TEXT_JUSTIFY_CENTER);	     		
+	 		targetDc.drawText(width / 6 * 4, height / 2 -2, fontLabel, labelRight, Gfx.TEXT_JUSTIFY_CENTER);
 	 		
-	 		targetDc.drawText(width / 2 - offcenter, height / 2 -15, fontLabel, infoLeft, Gfx.TEXT_JUSTIFY_CENTER);
-	 		targetDc.drawText(width / 2 - offcenter, height / 2 -2, fontLabel, labelLeft, Gfx.TEXT_JUSTIFY_CENTER); 
+	 		targetDc.drawText(width / 6 * 2, height / 2 -15, fontLabel, infoLeft, Gfx.TEXT_JUSTIFY_CENTER);
+	 		targetDc.drawText(width / 6 * 2, height / 2 -2, fontLabel, labelLeft, Gfx.TEXT_JUSTIFY_CENTER); 
 		}       
 
 
@@ -941,19 +941,8 @@ function onUpdate(dc) {
          //fontDigital = null;
          
     	//font for display
-	    if ( digiFont == 1) { //!digital
-	    	fontDigital = Ui.loadResource(Rez.Fonts.id_font_digital); 
-	    	//fontDigital = Gfx.FONT_SYSTEM_MEDIUM ;
-	    	//Sys.println("set digital");    
-	    	}
-	    if ( digiFont == 2) { //!classik
-        	fontDigital = Ui.loadResource(Rez.Fonts.id_font_classicklein); 
-        	//fontDigital = Gfx.FONT_SYSTEM_MEDIUM ;
-        	//Sys.println("set classic");     
-	    	}
-	    if ( digiFont == 3) { //!simple
-        		fontDigital = Gfx.FONT_SYSTEM_MEDIUM ;         	     	    
-	    }
+    	fontDigital = Ui.loadResource(Rez.Fonts.id_font_digital); 
+
 	    	    	   
 	    var UpperDispEnable = (App.getApp().getProperty("UpperDispEnable"));
 	    var LowerDispEnable = (App.getApp().getProperty("LowerDispEnable"));
@@ -1017,7 +1006,7 @@ var setX = center_x;
 	if (showMoveBar) {
 	targetDc.setPenWidth(3);
 	
-		targetDc.setColor(App.getApp().getProperty("QuarterNumbersColor"), Gfx.COLOR_TRANSPARENT);
+		targetDc.setColor(App.getApp().getProperty("NumbersColor"), Gfx.COLOR_TRANSPARENT);
 		if (ActMonitor.getInfo().moveBarLevel >= 1) {
 			targetDc.drawLine(setX - 7 , setY, setX  - 58, setY);		
 		//	targetDc.fillRoundedRectangle(ULBGx , setY, ULBGwidth/2 - 2 , 3, 3);
@@ -1076,6 +1065,10 @@ var setX = center_x;
         drawHashMarks(dc);  
         drawQuarterHashmarks(dc);    
         
+       
+        
+        
+        
    	//some Idicators
    		//!progress battery------------
 		var BatProgressEnable = (App.getApp().getProperty("BatProgressEnable"));
@@ -1102,21 +1095,24 @@ var setX = center_x;
             // allowed run the onPartialUpdate method to draw the second hand.
             onPartialUpdate(dc);
             Sys.println("_partialUpdatesAllowed = true");
-        } else if (isAwake) {
-        	var SecHandEnable = (App.getApp().getProperty("SecHandEnable"));
-        	if (SecHandEnable) {
-        		hands.drawSecondHands(dc);
-        		Sys.println("isAwake = true");
-        	}	
-        	
+        } else if (isAwake) {  
+        	Sys.println("iAwake = true");  	    	
             // Otherwise, if we are out of sleep mode, draw the second hand
             // directly in the full update method.
-            //targetDc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-            //var secondHand = (clockTime.sec / 60.0) * Math.PI * 2;
-
-            //targetDc.fillPolygon(generateHandCoordinates(_screenCenterPoint, secondHand, 60, 20, 2));
+        	var color1 = (App.getApp().getProperty("SecHands1Color"));
+			var color2 = (App.getApp().getProperty("SecHands2Color"));
+		
+        	var clockTime = System.getClockTime();
+        	var secondHand = (clockTime.sec / 60.0) * Math.PI * 2;
+        	var secondHandPoints1 = generateHandCoordinates(_screenCenterPoint, secondHand, 90, 20, 3);
+        	var secondHandPoints2 = generateHandCoordinates(_screenCenterPoint, secondHand, 70, 20, 3);
+        
+        	// Draw the second hand to the screen.
+        	dc.setColor(color2, Graphics.COLOR_TRANSPARENT);
+        	dc.fillPolygon(secondHandPoints1);
+        	dc.setColor(color1, Graphics.COLOR_TRANSPARENT);
+        	dc.fillPolygon(secondHandPoints2);
         }
-
 
       	 
         _fullScreenRefresh = false; 
@@ -1141,18 +1137,24 @@ Sys.println("");
             drawBackground(dc);
         }
 
+		var color1 = (App.getApp().getProperty("SecHands1Color"));
+		var color2 = (App.getApp().getProperty("SecHands2Color"));
+		
         var clockTime = System.getClockTime();
         var secondHand = (clockTime.sec / 60.0) * Math.PI * 2;
-        var secondHandPoints = generateHandCoordinates(_screenCenterPoint, secondHand, 60, 20, 2);
+        var secondHandPoints1 = generateHandCoordinates(_screenCenterPoint, secondHand, 90, 20, 3);
+        var secondHandPoints2 = generateHandCoordinates(_screenCenterPoint, secondHand, 70, 20, 3);
         // Update the clipping rectangle to the new location of the second hand.
-        var curClip = getBoundingBox(secondHandPoints);
-        var bBoxWidth = (curClip[1][0] - curClip[0][0] + 1) * 1.0;
-        var bBoxHeight = (curClip[1][1] - curClip[0][1] + 1) * 1.0;
+        var curClip = getBoundingBox(secondHandPoints1);
+        var bBoxWidth = curClip[1][0] - curClip[0][0] + 1;
+        var bBoxHeight = curClip[1][1] - curClip[0][1] + 1;
         dc.setClip(curClip[0][0], curClip[0][1], bBoxWidth, bBoxHeight);
 
         // Draw the second hand to the screen.
-        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-        dc.fillPolygon(secondHandPoints);
+        dc.setColor(color2, Graphics.COLOR_TRANSPARENT);
+        dc.fillPolygon(secondHandPoints1);
+        dc.setColor(color1, Graphics.COLOR_TRANSPARENT);
+        dc.fillPolygon(secondHandPoints2);
                
     }
 

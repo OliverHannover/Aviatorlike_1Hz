@@ -1,6 +1,5 @@
 <strings>
-	<string id="AppName">Aviatorlike</string>
-	<string id="AppVersionTitle">Version</string>
+	<string id="AppName">Aviatorlike_1Hz</string>
 	
 	<string id="none">None</string>
 
@@ -11,14 +10,13 @@
     <string id="QuarterNumbersColorTitle">Color of 5 minutes marks</string>
     <string id="NumbersColorTitle">Color of numbers</string>
     <string id="MinutesColorTitle">Color of minutes marks</string>
-    <string id="markslenthTitle">lenth of minutes marks (0-5) </string> 
+    <string id="markslenthTitle">lenth of minutes marks (0-3) </string> 
     
     <string id="HandsFormTitle">Kind of hands</string>
     <string id="HandsColor1Title">First color of hands</string>
     <string id="HandsColor2Title">Second color of hands</string>
     <string id="HandsOutlineColorTitle">Hands outline color</string>
-    
-    <string id="SecHandsFormTitle">Kind of second hand</string>   
+     
     <string id="SecHands1ColorTitle">First color of second hand</string>
     <string id="SecHands2ColorTitle">Second color of second hand</string>
     
@@ -73,11 +71,6 @@
     <string id="NbrClassic">Classic</string>
     <string id="NbrRoman">Roman</string>    
     <string id="NbrSimple">Simple</string>
-   
-   
-    <string id="DFDigital">Digital</string>
-    <string id="DFClassic">Classic</string> 
-    <string id="DFSimple">Simple</string> 
     
     <string id="DF1">Weekday DD Month</string>
     <string id="DF2">Weekday Month DD</string>
