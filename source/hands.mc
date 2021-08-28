@@ -111,7 +111,7 @@ module hands{
 		//Pilot settings
 		r0 = -30;
 		r1 = 9; //Entfernung zum rechten winkel
-		r2 = minute_radius * 2.5/10;  //Höhe Mittelbalken
+		r2 = minute_radius * 2.5/10;  //Hï¿½he Mittelbalken
 		r3 = hour_radius * 5/7;
 		deflec1 = 0.32; 
 		deflec2 = 0.2;
@@ -209,7 +209,7 @@ module hands{
 			alpha = Math.PI/6*(1.0*clockTime.hour+clockTime.min/60.0);
 			alpha2 = Math.PI/6*(1.0*clockTime.hour-3+clockTime.min/60.0);
 			maxRad = hour_radius;			
-			r1 = hour_radius * 6/10; // höhe des Querbalkens
+			r1 = hour_radius * 6/10; // hï¿½he des Querbalkens
 			deflec1 = 0.25; //wide of middle part
 			r2 = 3;
 	
@@ -270,7 +270,7 @@ module hands{
 				alpha = Math.PI/30.0*clockTime.min;
 				alpha2 = Math.PI/30.0*(clockTime.min-15);
 				maxRad = minute_radius;
-				r1 = minute_radius * 6.5/10; // höhe des Querbalkens
+				r1 = minute_radius * 6.5/10; // hï¿½he des Querbalkens
 				deflec1 = 0.16;					
 				r2 = 4;				
 			}		
@@ -386,97 +386,4 @@ module hands{
 		}// End of if (HandsForm == 5)	
 				         
   }//End of drawHands(dc)
-  
-	
-
-
-
-	function drawSecondHands(dc) {        
-          // the length of the minute hand
-        
-        var color1 = (App.getApp().getProperty("SecHands1Color"));
-		var color2 = (App.getApp().getProperty("SecHands2Color"));
-          	
-
- 	  	var width = dc.getWidth();
-        var height  = dc.getHeight();
-        var center_x = dc.getWidth() / 2;
-        var center_y = dc.getHeight() / 2;
-        
-        
-        var SecHandsForm = (App.getApp().getProperty("SecHandsForm"));
-        //seconds_radius = 7/8.0 * center_x;
-		var seconds_radius = height / 2 ; // wegen semiround halbe höhe
-		
-		var n;
-	
-		var clockTime = Sys.getClockTime();
-       	//! only for screenshots!
-       	//!clockTime.sec = 10;
-        
-        var r1, r2, r0, hand;
-		var alpha = Math.PI/30.0*clockTime.sec;
-		
-		dc.setColor(Gfx.COLOR_RED, Gfx.COLOR_TRANSPARENT);		
-		dc.setPenWidth(2);
-
-		r0 = -35;
-		r1 = 35;
-		r2 = seconds_radius;
-		
-if (SecHandsForm == 1) { //classic		
-			//untere Raute		
-			hand =        	[
-							[center_x+r0*Math.sin(alpha),center_y-r0*Math.cos(alpha)],						
-							[center_x+r1*Math.sin(alpha+0.08),center_y-r1*Math.cos(alpha+0.08)],
-							[center_x+r2*Math.sin(alpha),center_y-r2*Math.cos(alpha)],
-							[center_x+r1*Math.sin(alpha-0.08),center_y-r1*Math.cos(alpha-0.08)],						
-							[center_x+r0*Math.sin(alpha),center_y-r0*Math.cos(alpha)]	];	
-							
-			dc.setColor(color1, Gfx.COLOR_TRANSPARENT);
-			dc.fillPolygon(hand);		
-	
-			dc.setColor(color2, Gfx.COLOR_TRANSPARENT);
-	        dc.setPenWidth(1);
-			for (n=0; n<4; n++) {
-			dc.drawLine(hand[n][0], hand[n][1], hand[n+1][0], hand[n+1][1]);
-			}
-			
-			
-			//little circle
-			dc.setPenWidth(2);
-			dc.setColor(color1, Gfx.COLOR_TRANSPARENT);
-			dc.fillCircle(center_x+(seconds_radius-30)*Math.sin(alpha),center_y-(seconds_radius-30)*Math.cos(alpha),6);		
-			dc.setColor(color2, Gfx.COLOR_TRANSPARENT);
-			dc.drawCircle(center_x+(seconds_radius-30)*Math.sin(alpha),center_y-(seconds_radius-30)*Math.cos(alpha),6);
-		}
-		
-		if (SecHandsForm == 2) { //simple
-			
-			dc.setPenWidth(3);
-			dc.setColor(color1, Gfx.COLOR_TRANSPARENT);
-			dc.drawLine(center_x+r0*Math.sin(alpha),center_y-r0*Math.cos(alpha),
-			center_x+(r2-30)*Math.sin(alpha),center_y-(r2-30)*Math.cos(alpha));
-			
-			//Top
-			dc.setPenWidth(3);
-			dc.setColor(color2, Gfx.COLOR_TRANSPARENT);
-			dc.drawLine(center_x+(r2-30)*Math.sin(alpha),center_y-(r2-30)*Math.cos(alpha),
-			center_x+r2*Math.sin(alpha),center_y-r2*Math.cos(alpha));
-		
-		
-		} //end simple
-		
-	
-		//Centerpoint
-		dc.setPenWidth(2);
-		dc.setColor(color1, Gfx.COLOR_TRANSPARENT);
-		dc.fillCircle(center_x,center_y,4);
-		
-		dc.setColor(color2, Gfx.COLOR_TRANSPARENT);
-		dc.drawCircle(center_x,center_y,5);
-}
-
-
-
 }

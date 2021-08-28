@@ -55,7 +55,7 @@ module marker{
         	var center_y = dc.getHeight() / 2;
      
 			r1 = dc.getWidth()/2 - outerRad; //outside
-			r2 = r1 -lenth; ////Länge des Zeigers
+			r2 = r1 -lenth; ////Lï¿½nge des Zeigers
      
 			dc.setColor(App.getApp().getProperty("QuarterNumbersColor"), Gfx.COLOR_TRANSPARENT);
 			dc.setPenWidth(2);		
